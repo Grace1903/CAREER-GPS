@@ -1,0 +1,642 @@
+{% extends "base.html" %} {% block title %}ResumeAI - AI-Powered Career
+Intelligence Platform{% endblock %} {% block body_class %}landing-page{%
+endblock %} {% block navbar_class %}navbar-glass{% endblock %} {% block footer
+%}{% endblock %} {% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-shapes">
+    <div class="hero-shape hero-shape-1"></div>
+    <div class="hero-shape hero-shape-2"></div>
+    <div class="hero-shape hero-shape-3"></div>
+  </div>
+
+  <div class="container hero-content">
+    <div class="row align-items-center min-vh-100 py-5">
+      <div class="col-lg-6 text-white" data-aos="fade-right">
+        <span class="badge badge-gradient-success mb-3 px-3 py-2">
+          <i class="bi bi-stars me-1"></i> AI-Powered Platform
+        </span>
+        <h1 class="hero-title">
+          Transform Your Career with
+          <span class="d-block">Intelligent Resume Analysis</span>
+        </h1>
+        <p class="hero-subtitle">
+          Upload your resume and let our AI identify your skills, analyze gaps,
+          recommend courses, and create a personalized roadmap to your dream
+          career.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{{ url_for('auth.register') }}" class="btn btn-light btn-xl">
+            <i class="bi bi-rocket-takeoff me-2"></i>Get Started Free
+          </a>
+          <a href="#features" class="btn btn-outline-light btn-xl">
+            <i class="bi bi-play-circle me-2"></i>See How It Works
+          </a>
+        </div>
+
+        <div class="d-flex align-items-center gap-4 mt-5">
+          <div class="d-flex">
+            <img
+              src="https://i.pravatar.cc/40?img=1"
+              class="rounded-circle border border-2 border-white"
+              alt="User"
+            />
+            <img
+              src="https://i.pravatar.cc/40?img=2"
+              class="rounded-circle border border-2 border-white"
+              style="margin-left: -10px"
+              alt="User"
+            />
+            <img
+              src="https://i.pravatar.cc/40?img=3"
+              class="rounded-circle border border-2 border-white"
+              style="margin-left: -10px"
+              alt="User"
+            />
+            <img
+              src="https://i.pravatar.cc/40?img=4"
+              class="rounded-circle border border-2 border-white"
+              style="margin-left: -10px"
+              alt="User"
+            />
+          </div>
+          <div>
+            <div class="d-flex text-warning mb-1">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <small class="opacity-75">Trusted by 10,000+ professionals</small>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="col-lg-6 mt-5 mt-lg-0"
+        data-aos="fade-left"
+        data-aos-delay="200"
+      >
+        <div class="hero-illustration">
+          <div class="hero-illustration-card text-white text-center">
+            <div class="row g-4">
+              <div class="col-6">
+                <div
+                  class="p-4 rounded-4"
+                  style="background: rgba(255, 255, 255, 0.1)"
+                >
+                  <i class="bi bi-file-earmark-pdf display-4 mb-3"></i>
+                  <h6>Upload Resume</h6>
+                </div>
+              </div>
+              <div class="col-6">
+                <div
+                  class="p-4 rounded-4"
+                  style="background: rgba(255, 255, 255, 0.1)"
+                >
+                  <i class="bi bi-cpu display-4 mb-3"></i>
+                  <h6>AI Analysis</h6>
+                </div>
+              </div>
+              <div class="col-6">
+                <div
+                  class="p-4 rounded-4"
+                  style="background: rgba(255, 255, 255, 0.1)"
+                >
+                  <i class="bi bi-graph-up-arrow display-4 mb-3"></i>
+                  <h6>Skill Gap</h6>
+                </div>
+              </div>
+              <div class="col-6">
+                <div
+                  class="p-4 rounded-4"
+                  style="background: rgba(255, 255, 255, 0.1)"
+                >
+                  <i class="bi bi-signpost-2 display-4 mb-3"></i>
+                  <h6>Career Path</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div
+    class="position-absolute bottom-0 start-50 translate-middle-x mb-4 text-white text-center animate-pulse"
+  >
+    <small>Scroll to explore</small>
+    <div><i class="bi bi-chevron-double-down"></i></div>
+  </div>
+</section>
+
+<!-- Logos Section -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <p class="text-center text-muted mb-4">
+      Powered by leading AI technologies
+    </p>
+    <div class="row align-items-center justify-content-center g-5 opacity-50">
+      <div class="col-auto">
+        <h5 class="mb-0 text-muted">
+          <i class="bi bi-google me-2"></i>Google AI
+        </h5>
+      </div>
+      <div class="col-auto">
+        <h5 class="mb-0 text-muted">
+          <i class="bi bi-braces me-2"></i>spaCy NLP
+        </h5>
+      </div>
+      <div class="col-auto">
+        <h5 class="mb-0 text-muted">
+          <i class="bi bi-file-earmark-code me-2"></i>Tesseract OCR
+        </h5>
+      </div>
+      <div class="col-auto">
+        <h5 class="mb-0 text-muted">
+          <i class="bi bi-diagram-3 me-2"></i>ML Models
+        </h5>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-6 bg-pattern">
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <span class="badge badge-soft-primary mb-3 px-3 py-2">Features</span>
+      <h2 class="display-5 fw-bold mb-3">Powerful AI-Driven Features</h2>
+      <p class="lead text-muted mx-auto" style="max-width: 600px">
+        Everything you need to analyze, improve, and accelerate your career
+        growth
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Feature 1 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 feature-card hover-lift">
+          <div class="card-body">
+            <div class="feature-icon-wrapper feature-icon-primary">
+              <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <h5>Smart Resume Parsing</h5>
+            <p>
+              Advanced multi-layer extraction using OCR, PyMuPDF, and PyPDF2 for
+              maximum accuracy across all formats.
+            </p>
+            <a href="#" class="text-primary text-decoration-none fw-semibold">
+              Learn more <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 feature-card hover-lift">
+          <div class="card-body">
+            <div class="feature-icon-wrapper feature-icon-success">
+              <i class="bi bi-cpu"></i>
+            </div>
+            <h5>AI Skill Extraction</h5>
+            <p>
+              Hybrid approach using Gemini AI, spaCy NER, and taxonomy matching
+              for comprehensive skill identification.
+            </p>
+            <a href="#" class="text-primary text-decoration-none fw-semibold">
+              Learn more <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100 feature-card hover-lift">
+          <div class="card-body">
+            <div class="feature-icon-wrapper feature-icon-warning">
+              <i class="bi bi-bar-chart-line"></i>
+            </div>
+            <h5>Skill Gap Analysis</h5>
+            <p>
+              Compare your skills against job requirements with RAG-based
+              semantic matching and priority ranking.
+            </p>
+            <a href="#" class="text-primary text-decoration-none fw-semibold">
+              Learn more <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="card h-100 feature-card hover-lift">
+          <div class="card-body">
+            <div class="feature-icon-wrapper feature-icon-info">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+            <h5>Course Recommendations</h5>
+            <p>
+              Personalized learning paths with curated courses from top
+              platforms to fill your skill gaps efficiently.
+            </p>
+            <a href="#" class="text-primary text-decoration-none fw-semibold">
+              Learn more <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+        <div class="card h-100 feature-card hover-lift">
+          <div class="card-body">
+            <div class="feature-icon-wrapper feature-icon-danger">
+              <i class="bi bi-signpost-split"></i>
+            </div>
+            <h5>Career Roadmap</h5>
+            <p>
+              AI-generated multi-phase learning journey with timelines,
+              milestones, and career progression paths.
+            </p>
+            <a href="#" class="text-primary text-decoration-none fw-semibold">
+              Learn more <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+        <div class="card h-100 feature-card hover-lift">
+          <div class="card-body">
+            <div
+              class="feature-icon-wrapper"
+              style="background: var(--dark-gradient); color: #fff"
+            >
+              <i class="bi bi-shield-check"></i>
+            </div>
+            <h5>Job Stability Analysis</h5>
+            <p>
+              Predictive insights on job market trends, automation risk, and
+              career stability based on real data.
+            </p>
+            <a href="#" class="text-primary text-decoration-none fw-semibold">
+              Learn more <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="py-6 bg-white">
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <span class="badge badge-soft-success mb-3 px-3 py-2">Process</span>
+      <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+      <p class="lead text-muted">Four simple steps to transform your career</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="text-center position-relative">
+          <div class="position-relative d-inline-block mb-4">
+            <div
+              class="feature-icon-wrapper feature-icon-primary"
+              style="width: 100px; height: 100px; font-size: 2.5rem"
+            >
+              <i class="bi bi-cloud-upload"></i>
+            </div>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+              style="font-size: 1rem"
+            >
+              1
+            </span>
+          </div>
+          <h5 class="fw-bold">Upload Resume</h5>
+          <p class="text-muted">
+            Simply upload your PDF resume through our secure platform
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-center position-relative">
+          <div class="position-relative d-inline-block mb-4">
+            <div
+              class="feature-icon-wrapper feature-icon-success"
+              style="width: 100px; height: 100px; font-size: 2.5rem"
+            >
+              <i class="bi bi-crosshair"></i>
+            </div>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+              style="font-size: 1rem"
+            >
+              2
+            </span>
+          </div>
+          <h5 class="fw-bold">Select Target Role</h5>
+          <p class="text-muted">
+            Choose the job role you want to analyze your resume against
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="text-center position-relative">
+          <div class="position-relative d-inline-block mb-4">
+            <div
+              class="feature-icon-wrapper feature-icon-warning"
+              style="width: 100px; height: 100px; font-size: 2.5rem"
+            >
+              <i class="bi bi-magic"></i>
+            </div>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+              style="font-size: 1rem"
+            >
+              3
+            </span>
+          </div>
+          <h5 class="fw-bold">AI Analysis</h5>
+          <p class="text-muted">
+            Our AI extracts skills, identifies gaps, and generates insights
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="text-center position-relative">
+          <div class="position-relative d-inline-block mb-4">
+            <div
+              class="feature-icon-wrapper feature-icon-info"
+              style="width: 100px; height: 100px; font-size: 2.5rem"
+            >
+              <i class="bi bi-rocket-takeoff"></i>
+            </div>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark"
+              style="font-size: 1rem"
+            >
+              4
+            </span>
+          </div>
+          <h5 class="fw-bold">Get Roadmap</h5>
+          <p class="text-muted">
+            Receive personalized career roadmap and course recommendations
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section
+  class="py-6 bg-gradient-primary text-white position-relative overflow-hidden"
+>
+  <div
+    class="position-absolute top-0 start-0 w-100 h-100"
+    style="background: url(&quot;data:image/svg+xml,...&quot;) repeat"
+  ></div>
+  <div class="container position-relative py-5">
+    <div class="row g-4 text-center">
+      <div class="col-lg-3 col-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="display-3 fw-bold mb-2">10+</div>
+        <p class="mb-0 opacity-75">Job Roles Supported</p>
+      </div>
+      <div class="col-lg-3 col-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="display-3 fw-bold mb-2">150+</div>
+        <p class="mb-0 opacity-75">Skills Tracked</p>
+      </div>
+      <div class="col-lg-3 col-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="display-3 fw-bold mb-2">20+</div>
+        <p class="mb-0 opacity-75">Course Providers</p>
+      </div>
+      <div class="col-lg-3 col-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="display-3 fw-bold mb-2">98%</div>
+        <p class="mb-0 opacity-75">Accuracy Rate</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-6 bg-light">
+  <div class="container py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <span class="badge badge-soft-warning mb-3 px-3 py-2">Testimonials</span>
+      <h2 class="display-5 fw-bold mb-3">What Our Users Say</h2>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex text-warning mb-3">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <p class="mb-4">
+              "This platform identified skills I didn't even know I had! The
+              career roadmap helped me land my dream job as a Data Scientist."
+            </p>
+            <div class="d-flex align-items-center">
+              <img
+                src="https://i.pravatar.cc/50?img=5"
+                class="rounded-circle me-3"
+                alt="User"
+              />
+              <div>
+                <h6 class="mb-0">Priya Sharma</h6>
+                <small class="text-muted">Data Scientist at Google</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex text-warning mb-3">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <p class="mb-4">
+              "The skill gap analysis was eye-opening. I followed the
+              recommended courses and got promoted within 6 months!"
+            </p>
+            <div class="d-flex align-items-center">
+              <img
+                src="https://i.pravatar.cc/50?img=8"
+                class="rounded-circle me-3"
+                alt="User"
+              />
+              <div>
+                <h6 class="mb-0">Rahul Verma</h6>
+                <small class="text-muted">Senior Developer at Microsoft</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100 border-0 shadow-sm">
+          <div class="card-body p-4">
+            <div class="d-flex text-warning mb-3">
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+              <i class="bi bi-star-fill"></i>
+            </div>
+            <p class="mb-4">
+              "As a career switcher, this tool gave me clarity on what skills to
+              focus on. Highly recommend for anyone planning a career change!"
+            </p>
+            <div class="d-flex align-items-center">
+              <img
+                src="https://i.pravatar.cc/50?img=9"
+                class="rounded-circle me-3"
+                alt="User"
+              />
+              <div>
+                <h6 class="mb-0">Ananya Patel</h6>
+                <small class="text-muted">ML Engineer at Amazon</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-6 bg-white">
+  <div class="container py-5">
+    <div
+      class="card border-0 bg-gradient-primary text-white overflow-hidden"
+      data-aos="zoom-in"
+    >
+      <div class="card-body p-5 position-relative">
+        <div class="hero-shapes">
+          <div
+            class="hero-shape"
+            style="width: 200px; height: 200px; top: -50px; right: -50px"
+          ></div>
+          <div
+            class="hero-shape"
+            style="width: 150px; height: 150px; bottom: -30px; left: 10%"
+          ></div>
+        </div>
+        <div class="row align-items-center position-relative">
+          <div class="col-lg-8 mb-4 mb-lg-0">
+            <h2 class="display-6 fw-bold mb-3">
+              Ready to Accelerate Your Career?
+            </h2>
+            <p class="lead mb-0 opacity-90">
+              Join thousands of professionals using AI to guide their career
+              decisions. Start your free analysis today!
+            </p>
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <a
+              href="{{ url_for('auth.register') }}"
+              class="btn btn-light btn-xl"
+            >
+              <i class="bi bi-rocket-takeoff me-2"></i>Get Started Free
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <h5><i class="bi bi-cpu-fill me-2"></i>ResumeAI</h5>
+        <p class="text-white-50 mb-4">
+          Empowering careers with AI-driven resume analysis, skill gap
+          identification, and personalized learning recommendations.
+        </p>
+        <div class="footer-social">
+          <a href="#"><i class="bi bi-twitter"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-github"></i></a>
+          <a href="#"><i class="bi bi-instagram"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-4">
+        <h5>Product</h5>
+        <ul class="footer-links">
+          <li><a href="#">Features</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">API</a></li>
+          <li><a href="#">Integrations</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2 col-md-4">
+        <h5>Company</h5>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2 col-md-4">
+        <h5>Support</h5>
+        <ul class="footer-links">
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2">
+        <h5>Legal</h5>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom text-center">
+      <p class="text-white-50 mb-0">
+        &copy; 2024 ResumeAI. All rights reserved. Made with
+        <i class="bi bi-heart-fill text-danger"></i> for career growth.
+      </p>
+    </div>
+  </div>
+</footer>
+{% endblock %}

@@ -1,0 +1,327 @@
+{% extends "base.html" %} {% block title %}Dashboard - ResumeAI{% endblock %} {%
+block navbar_class %}{% endblock %} {% block nav_items %}
+<li class="nav-item">
+  <a class="nav-link active" href="{{ url_for('student.dashboard') }}">
+    <i class="bi bi-grid-1x2 me-1"></i>Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.upload_resume') }}">
+    <i class="bi bi-cloud-upload me-1"></i>Analyze Resume
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.history') }}">
+    <i class="bi bi-clock-history me-1"></i>History
+  </a>
+</li>
+<li class="nav-item dropdown">
+  <a
+    class="nav-link dropdown-toggle d-flex align-items-center"
+    href="#"
+    data-bs-toggle="dropdown"
+  >
+    <div
+      class="rounded-circle bg-gradient-primary text-white d-flex align-items-center justify-content-center me-2"
+      style="width: 32px; height: 32px; font-size: 0.875rem"
+    >
+      {{ user.full_name[0] | upper }}
+    </div>
+    {{ user.full_name.split()[0] }}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+    <li class="px-3 py-2">
+      <small class="text-muted">Signed in as</small>
+      <div class="fw-semibold">{{ user.email }}</div>
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item" href="{{ url_for('student.profile') }}">
+        <i class="bi bi-person me-2"></i>Profile Settings
+      </a>
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+        <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+      </a>
+    </li>
+  </ul>
+</li>
+{% endblock %} {% block footer %}{% endblock %} {% block content %}
+<div class="bg-light min-vh-100" style="padding-top: 80px">
+  <div class="container py-4">
+    <!-- Welcome Header -->
+    <div class="row mb-4" data-aos="fade-up">
+      <div class="col-12">
+        <div
+          class="card border-0 bg-gradient-primary text-white overflow-hidden"
+        >
+          <div class="card-body p-4 p-lg-5 position-relative">
+            <div class="hero-shapes" style="opacity: 0.1">
+              <div
+                class="hero-shape"
+                style="width: 200px; height: 200px; top: -50px; right: -50px"
+              ></div>
+            </div>
+            <div class="row align-items-center position-relative">
+              <div class="col-lg-8">
+                <h2 class="fw-bold mb-2">
+                  Welcome back, {{ user.full_name.split()[0] }}! 👋
+                </h2>
+                <p class="mb-0 opacity-90">
+                  Ready to analyze your resume and discover new career
+                  opportunities?
+                </p>
+              </div>
+              <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                <a
+                  href="{{ url_for('student.upload_resume') }}"
+                  class="btn btn-light btn-lg"
+                >
+                  <i class="bi bi-plus-circle me-2"></i>New Analysis
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div
+          class="card border-0 h-100 stat-card card-gradient-primary text-white"
+        >
+          <div class="card-body p-4">
+            <div class="stat-icon"><i class="bi bi-file-earmark-text"></i></div>
+            <div class="stat-value">{{ total_resumes }}</div>
+            <div class="stat-label mt-2">Total Resumes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div
+          class="card border-0 h-100 stat-card card-gradient-success text-white"
+        >
+          <div class="card-body p-4">
+            <div class="stat-icon"><i class="bi bi-bar-chart-line"></i></div>
+            <div class="stat-value">{{ total_analyses }}</div>
+            <div class="stat-label mt-2">Analyses Done</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div
+          class="card border-0 h-100 stat-card card-gradient-warning text-dark"
+        >
+          <div class="card-body p-4">
+            <div class="stat-icon"><i class="bi bi-briefcase"></i></div>
+            <div class="stat-value">{{ job_roles|length }}</div>
+            <div class="stat-label mt-2">Job Roles</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div
+          class="card border-0 h-100 stat-card card-gradient-info text-white"
+        >
+          <div class="card-body p-4">
+            <div class="stat-icon"><i class="bi bi-lightning"></i></div>
+            <div class="stat-value">AI</div>
+            <div class="stat-label mt-2">Powered Analysis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row g-4">
+      <!-- Quick Actions -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card border-0 h-100">
+          <div class="card-header bg-transparent border-0 pb-0">
+            <h5 class="fw-bold mb-0">
+              <i class="bi bi-lightning-charge text-warning me-2"></i>Quick
+              Actions
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="d-grid gap-3">
+              <a
+                href="{{ url_for('student.upload_resume') }}"
+                class="btn btn-primary py-3"
+              >
+                <i class="bi bi-cloud-upload me-2"></i>Upload New Resume
+              </a>
+              <a
+                href="{{ url_for('student.history') }}"
+                class="btn btn-outline-primary py-3"
+              >
+                <i class="bi bi-clock-history me-2"></i>View All History
+              </a>
+              <a
+                href="{{ url_for('student.profile') }}"
+                class="btn btn-outline-secondary py-3"
+              >
+                <i class="bi bi-person-gear me-2"></i>Profile Settings
+              </a>
+            </div>
+
+            <hr class="my-4" />
+
+            <h6 class="fw-bold mb-3">Available Job Roles</h6>
+            <div class="d-flex flex-wrap gap-2">
+              {% for job in job_roles[:8] %}
+              <span class="badge badge-soft-primary">{{ job.title }}</span>
+              {% endfor %} {% if job_roles|length > 8 %}
+              <span class="badge badge-gradient-primary"
+                >+{{ job_roles|length - 8 }} more</span
+              >
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Analyses -->
+      <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+        <div class="card border-0 h-100">
+          <div
+            class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center pb-0"
+          >
+            <h5 class="fw-bold mb-0">
+              <i class="bi bi-clock-history text-primary me-2"></i>Recent
+              Analyses
+            </h5>
+            <a
+              href="{{ url_for('student.history') }}"
+              class="btn btn-sm btn-outline-primary"
+            >
+              View All <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+          </div>
+          <div class="card-body">
+            {% if recent_analyses %}
+            <div class="table-responsive">
+              <table class="table table-hover align-middle">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Target Role</th>
+                    <th>Match Score</th>
+                    <th>Stability</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for analysis in recent_analyses %}
+                  <tr>
+                    <td>
+                      <div class="fw-semibold">
+                        {{ analysis.created_at.strftime('%b %d, %Y') }}
+                      </div>
+                      <small class="text-muted"
+                        >{{ analysis.created_at.strftime('%H:%M') }}</small
+                      >
+                    </td>
+                    <td>
+                      <span class="badge badge-soft-primary"
+                        >{{ analysis.target_job_role }}</span
+                      >
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div
+                          class="progress flex-grow-1 me-2"
+                          style="width: 100px; height: 8px"
+                        >
+                          <div
+                            class="progress-bar {% if analysis.skill_match_percentage >= 70 %}progress-gradient-success {% elif analysis.skill_match_percentage >= 40 %}progress-gradient-warning {% else %}progress-gradient-danger{% endif %}"
+                            style="width: {{ analysis.skill_match_percentage }}%"
+                          ></div>
+                        </div>
+                        <span class="fw-semibold"
+                          >{{ analysis.skill_match_percentage }}%</span
+                        >
+                      </div>
+                    </td>
+                    <td>
+                      <span
+                        class="badge {% if analysis.risk_classification == 'Low Risk' %}badge-soft-success {% elif analysis.risk_classification == 'Moderate Risk' %}badge-soft-primary {% elif analysis.risk_classification == 'Medium Risk' %}badge-soft-warning {% else %}badge-soft-danger{% endif %}"
+                      >
+                        {{ analysis.risk_classification or 'N/A' }}
+                      </span>
+                    </td>
+                    <td>
+                      <a
+                        href="{{ url_for('student.view_analysis', analysis_id=analysis.id) }}"
+                        class="btn btn-sm btn-primary rounded-circle"
+                      >
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+              <div
+                class="feature-icon-wrapper feature-icon-primary mx-auto mb-4"
+                style="width: 80px; height: 80px; font-size: 2rem"
+              >
+                <i class="bi bi-inbox"></i>
+              </div>
+              <h5 class="fw-bold mb-2">No Analyses Yet</h5>
+              <p class="text-muted mb-4">
+                Upload your first resume to get started with AI-powered analysis
+              </p>
+              <a
+                href="{{ url_for('student.upload_resume') }}"
+                class="btn btn-primary"
+              >
+                <i class="bi bi-upload me-2"></i>Upload Resume
+              </a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips Section -->
+    <div class="row mt-4" data-aos="fade-up" data-aos-delay="300">
+      <div class="col-12">
+        <div class="card border-0 bg-light">
+          <div class="card-body p-4">
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <div
+                  class="feature-icon-wrapper feature-icon-warning"
+                  style="width: 50px; height: 50px; font-size: 1.5rem"
+                >
+                  <i class="bi bi-lightbulb"></i>
+                </div>
+              </div>
+              <div class="col">
+                <h6 class="fw-bold mb-1">Pro Tip</h6>
+                <p class="mb-0 text-muted">
+                  For the best analysis results, ensure your resume is in PDF
+                  format and includes detailed descriptions of your skills,
+                  projects, and experience.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

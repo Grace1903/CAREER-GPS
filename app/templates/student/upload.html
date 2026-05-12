@@ -1,0 +1,438 @@
+{% extends "base.html" %} {% block title %}Analyze Resume - ResumeAI{% endblock
+%} {% block nav_items %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.dashboard') }}">
+    <i class="bi bi-grid-1x2 me-1"></i>Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link active" href="{{ url_for('student.upload_resume') }}">
+    <i class="bi bi-cloud-upload me-1"></i>Analyze Resume
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.history') }}">
+    <i class="bi bi-clock-history me-1"></i>History
+  </a>
+</li>
+<li class="nav-item dropdown">
+  <a
+    class="nav-link dropdown-toggle d-flex align-items-center"
+    href="#"
+    data-bs-toggle="dropdown"
+  >
+    <div
+      class="rounded-circle bg-gradient-primary text-white d-flex align-items-center justify-content-center me-2"
+      style="width: 32px; height: 32px; font-size: 0.875rem"
+    >
+      {{ user.full_name[0] | upper }}
+    </div>
+    {{ user.full_name.split()[0] }}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+    <li>
+      <a class="dropdown-item" href="{{ url_for('student.profile') }}">
+        <i class="bi bi-person me-2"></i>Profile
+      </a>
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+        <i class="bi bi-box-arrow-right me-2"></i>Sign Out
+      </a>
+    </li>
+  </ul>
+</li>
+{% endblock %} {% block footer %}{% endblock %} {% block content %}
+<div class="bg-light min-vh-100" style="padding-top: 80px">
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <!-- Header -->
+        <div class="text-center mb-5" data-aos="fade-up">
+          <div
+            class="feature-icon-wrapper feature-icon-primary mx-auto mb-4"
+            style="width: 80px; height: 80px; font-size: 2rem"
+          >
+            <i class="bi bi-cpu"></i>
+          </div>
+          <h2 class="fw-bold mb-2">AI Resume Analysis</h2>
+          <p class="text-muted">
+            Upload your resume and select a target job role for comprehensive
+            analysis
+          </p>
+        </div>
+
+        <!-- Upload Card -->
+        <div
+          class="card border-0 shadow-lg mb-4"
+          data-aos="fade-up"
+          data-aos-delay="100"
+        >
+          <div class="card-body p-4 p-lg-5">
+            <form
+              method="POST"
+              action="{{ url_for('student.upload_resume') }}"
+              enctype="multipart/form-data"
+              id="uploadForm"
+            >
+              <!-- File Upload -->
+              <div class="mb-4">
+                <label class="form-label fw-bold">
+                  <i class="bi bi-file-earmark-pdf text-danger me-2"></i>Resume
+                  File (PDF)
+                </label>
+                <div class="upload-area" id="uploadArea">
+                  <input
+                    type="file"
+                    class="d-none"
+                    id="resume"
+                    name="resume"
+                    accept=".pdf"
+                    required
+                  />
+                  <div class="upload-icon">
+                    <i class="bi bi-cloud-arrow-up"></i>
+                  </div>
+                  <h5 class="fw-bold mb-2">Drop your resume here</h5>
+                  <p class="text-muted mb-3">or click to browse files</p>
+                  <button
+                    type="button"
+                    class="btn btn-outline-primary"
+                    onclick="document.getElementById('resume').click()"
+                  >
+                    <i class="bi bi-folder2-open me-2"></i>Browse Files
+                  </button>
+                  <p class="small text-muted mt-3 mb-0">
+                    Maximum file size: 16 MB • PDF only
+                  </p>
+
+                  <div id="fileInfo" class="mt-4 d-none">
+                    <div
+                      class="d-inline-flex align-items-center bg-success bg-opacity-10 rounded-pill px-4 py-2"
+                    >
+                      <i class="bi bi-check-circle-fill text-success me-2"></i>
+                      <span
+                        class="fw-semibold text-success"
+                        id="fileName"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Job Role Selection -->
+              <div class="mb-4">
+                <label for="job_role" class="form-label fw-bold">
+                  <i class="bi bi-briefcase text-primary me-2"></i>Target Job
+                  Role
+                </label>
+                <select
+                  class="form-select form-select-lg"
+                  id="job_role"
+                  name="job_role"
+                  required
+                >
+                  <option value="">Select your target job role...</option>
+                  {% for job in job_roles %}
+                  <option
+                    value="{{ job.title }}"
+                    data-industry="{{ job.industry }}"
+                    data-required="{{ job.required_skills }}"
+                    data-preferred="{{ job.preferred_skills }}"
+                  >
+                    {{ job.title }}
+                  </option>
+                  {% endfor %}
+                </select>
+                <div class="form-text">
+                  Choose the role you want to analyze your resume against
+                </div>
+              </div>
+
+              <!-- Job Role Details -->
+              <div id="jobDetails" class="mb-4 d-none">
+                <div class="card bg-light border-0">
+                  <div class="card-body">
+                    <h6 class="fw-bold mb-3">
+                      <i class="bi bi-info-circle text-primary me-2"></i>
+                      Role Requirements
+                    </h6>
+                    <div class="mb-3">
+                      <small class="text-muted d-block mb-2"
+                        >Required Skills:</small
+                      >
+                      <div
+                        id="requiredSkills"
+                        class="d-flex flex-wrap gap-2"
+                      ></div>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block mb-2"
+                        >Preferred Skills:</small
+                      >
+                      <div
+                        id="preferredSkills"
+                        class="d-flex flex-wrap gap-2"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit Button -->
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg w-100 py-3"
+                id="submitBtn"
+              >
+                <i class="bi bi-cpu me-2"></i>Start AI Analysis
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Process Steps -->
+        <div
+          class="card border-0 shadow-sm"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <div class="card-body p-4">
+            <h6 class="fw-bold mb-4">
+              <i class="bi bi-gear text-primary me-2"></i>What happens next?
+            </h6>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 me-3"
+                    >
+                      <i class="bi bi-1-circle-fill"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Text Extraction</h6>
+                    <small class="text-muted"
+                      >Multi-layer PDF parsing using OCR & PyMuPDF</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 me-3"
+                    >
+                      <i class="bi bi-2-circle-fill"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">NLP Processing</h6>
+                    <small class="text-muted"
+                      >Tokenization & linguistic analysis with spaCy</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 me-3"
+                    >
+                      <i class="bi bi-3-circle-fill"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Skill Extraction</h6>
+                    <small class="text-muted"
+                      >AI-powered skill identification using Gemini</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-circle bg-primary bg-opacity-10 text-primary p-2 me-3"
+                    >
+                      <i class="bi bi-4-circle-fill"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Gap Analysis</h6>
+                    <small class="text-muted"
+                      >Compare skills against job requirements</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-circle bg-success bg-opacity-10 text-success p-2 me-3"
+                    >
+                      <i class="bi bi-5-circle-fill"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Course Recommendations</h6>
+                    <small class="text-muted"
+                      >Personalized learning path suggestions</small
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <div
+                      class="rounded-circle bg-success bg-opacity-10 text-success p-2 me-3"
+                    >
+                      <i class="bi bi-6-circle-fill"></i>
+                    </div>
+                  </div>
+                  <div>
+                    <h6 class="mb-1">Career Roadmap</h6>
+                    <small class="text-muted"
+                      >Multi-phase journey with timelines</small
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Modal -->
+<div
+  class="modal fade"
+  id="loadingModal"
+  data-bs-backdrop="static"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-body text-center p-5">
+        <div class="spinner mb-4 mx-auto"></div>
+        <h5 class="fw-bold mb-2">Analyzing Your Resume</h5>
+        <p class="text-muted mb-4">
+          Our AI is extracting skills and generating insights...
+        </p>
+        <div class="progress" style="height: 6px">
+          <div
+            class="progress-bar progress-gradient-primary progress-bar-striped progress-bar-animated"
+            style="width: 100%"
+          ></div>
+        </div>
+        <p class="small text-muted mt-3 mb-0">
+          This usually takes 15-30 seconds
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  // File upload handling
+  const uploadArea = document.getElementById("uploadArea");
+  const fileInput = document.getElementById("resume");
+  const fileInfo = document.getElementById("fileInfo");
+  const fileName = document.getElementById("fileName");
+
+  // Click to upload
+  uploadArea.addEventListener("click", (e) => {
+    if (e.target.tagName !== "BUTTON") {
+      fileInput.click();
+    }
+  });
+
+  // Drag and drop
+  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+    uploadArea.addEventListener(eventName, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  });
+
+  ["dragenter", "dragover"].forEach((eventName) => {
+    uploadArea.addEventListener(eventName, () => {
+      uploadArea.classList.add("dragover");
+    });
+  });
+
+  ["dragleave", "drop"].forEach((eventName) => {
+    uploadArea.addEventListener(eventName, () => {
+      uploadArea.classList.remove("dragover");
+    });
+  });
+
+  uploadArea.addEventListener("drop", (e) => {
+    if (e.dataTransfer.files.length) {
+      fileInput.files = e.dataTransfer.files;
+      updateFileInfo();
+    }
+  });
+
+  fileInput.addEventListener("change", updateFileInfo);
+
+  function updateFileInfo() {
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      if (file.type === "application/pdf") {
+        fileName.textContent = file.name;
+        fileInfo.classList.remove("d-none");
+        uploadArea.style.borderColor = "#38ef7d";
+        uploadArea.style.background = "rgba(56, 239, 125, 0.05)";
+      } else {
+        alert("Please select a PDF file");
+        fileInput.value = "";
+      }
+    }
+  }
+
+  // Job role details
+  const jobRoleSelect = document.getElementById("job_role");
+  const jobDetails = document.getElementById("jobDetails");
+
+  jobRoleSelect.addEventListener("change", function () {
+    const option = this.options[this.selectedIndex];
+
+    if (this.value) {
+      try {
+        const requiredSkills = JSON.parse(option.dataset.required || "[]");
+        const preferredSkills = JSON.parse(option.dataset.preferred || "[]");
+
+        document.getElementById("requiredSkills").innerHTML = requiredSkills
+          .map((s) => `<span class="badge badge-soft-danger">${s}</span>`)
+          .join("");
+
+        document.getElementById("preferredSkills").innerHTML = preferredSkills
+          .map((s) => `<span class="badge badge-soft-warning">${s}</span>`)
+          .join("");
+
+        jobDetails.classList.remove("d-none");
+      } catch (e) {
+        console.error("Error parsing skills:", e);
+      }
+    } else {
+      jobDetails.classList.add("d-none");
+    }
+  });
+
+  // Form submission
+  document.getElementById("uploadForm").addEventListener("submit", function () {
+    const modal = new bootstrap.Modal(document.getElementById("loadingModal"));
+    modal.show();
+  });
+</script>
+{% endblock %}

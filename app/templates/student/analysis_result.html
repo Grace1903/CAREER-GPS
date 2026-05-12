@@ -1,0 +1,511 @@
+{% extends "base.html" %} {% block title %}Analysis Result - Resume Analyzer{%
+endblock %} {% block nav_items %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.dashboard') }}">
+    <i class="bi bi-speedometer2 me-1"></i>Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.upload_resume') }}">
+    <i class="bi bi-cloud-upload me-1"></i>Upload Resume
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.history') }}">
+    <i class="bi bi-clock-history me-1"></i>History
+  </a>
+</li>
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+    <i class="bi bi-person-circle me-1"></i>{{ user.full_name }}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li>
+      <a class="dropdown-item" href="{{ url_for('student.profile') }}"
+        >Profile</a
+      >
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+    </li>
+  </ul>
+</li>
+{% endblock %} {% block content %}
+<div class="container mt-5 pt-4">
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-1">
+            <i class="bi bi-bar-chart-fill me-2 text-primary"></i>
+            Analysis Results
+          </h2>
+          <p class="text-muted mb-0">
+            Target Role: <strong>{{ analysis.target_job_role }}</strong> |
+            Analyzed: {{ analysis.created_at[:10] }}
+          </p>
+        </div>
+        <div>
+          <a
+            href="{{ url_for('student.upload_resume') }}"
+            class="btn btn-outline-primary me-2"
+          >
+            <i class="bi bi-plus-circle me-1"></i>New Analysis
+          </a>
+          <button class="btn btn-primary" onclick="window.print()">
+            <i class="bi bi-printer me-1"></i>Print Report
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body text-center">
+          <h6 class="text-white-50">Skill Match</h6>
+          <h2 class="display-5 mb-0">{{ analysis.skill_match_percentage }}%</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body text-center">
+          <h6 class="text-white-50">Skills Found</h6>
+          <h2 class="display-5 mb-0">{{ analysis.extracted_skills|length }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-dark h-100">
+        <div class="card-body text-center">
+          <h6 class="opacity-75">Skills to Learn</h6>
+          <h2 class="display-5 mb-0">{{ analysis.missing_skills|length }}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div
+        class="card {% if analysis.risk_classification == 'Low Risk' %}bg-success {% elif analysis.risk_classification == 'Moderate Risk' %}bg-info {% elif analysis.risk_classification == 'Medium Risk' %}bg-warning {% else %}bg-danger{% endif %} text-white h-100"
+      >
+        <div class="card-body text-center">
+          <h6 class="text-white-50">Job Stability</h6>
+          <h4 class="mb-0">{{ analysis.stability_score }}/100</h4>
+          <small>{{ analysis.risk_classification }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-lg-8">
+      <!-- Extracted Skills -->
+      <div class="card mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>Your Skills
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Technical Skills</h6>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                {% for skill in analysis.technical_skills %}
+                <span class="badge bg-primary">{{ skill }}</span>
+                {% else %}
+                <span class="text-muted">No technical skills extracted</span>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6>Soft Skills</h6>
+              <div class="d-flex flex-wrap gap-2">
+                {% for skill in analysis.soft_skills %}
+                <span class="badge bg-info">{{ skill }}</span>
+                {% else %}
+                <span class="text-muted">No soft skills extracted</span>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skill Gap Analysis -->
+      <div class="card mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-graph-up-arrow text-warning me-2"></i>Skill Gap
+            Analysis
+          </h5>
+        </div>
+        <div class="card-body">
+          <!-- Match Progress -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between mb-2">
+              <span>Skill Match Progress</span>
+              <span class="fw-bold"
+                >{{ analysis.skill_match_percentage }}%</span
+              >
+            </div>
+            <div class="progress" style="height: 25px">
+              <div
+                class="progress-bar {% if analysis.skill_match_percentage >= 70 %}bg-success {% elif analysis.skill_match_percentage >= 40 %}bg-warning {% else %}bg-danger{% endif %}"
+                style="width: {{ analysis.skill_match_percentage }}%"
+              ></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="text-success">
+                <i class="bi bi-check-lg me-1"></i>Matched Skills
+              </h6>
+              <ul class="list-group list-group-flush">
+                {% for skill in analysis.matched_skills %}
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>{{
+                  skill }}
+                </li>
+                {% else %}
+                <li class="list-group-item text-muted">No matched skills</li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-danger">
+                <i class="bi bi-x-lg me-1"></i>Missing Skills
+              </h6>
+              <ul class="list-group list-group-flush">
+                {% for skill in analysis.missing_skills[:8] %}
+                <li class="list-group-item d-flex align-items-center">
+                  <i class="bi bi-x-circle-fill text-danger me-2"></i>{{ skill
+                  }}
+                </li>
+                {% else %}
+                <li class="list-group-item text-muted">No missing skills!</li>
+                {% endfor %} {% if analysis.missing_skills|length > 8 %}
+                <li class="list-group-item text-muted">
+                  +{{ analysis.missing_skills|length - 8 }} more...
+                </li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Priority Skills -->
+      {% if analysis.priority_skills %}
+      <div class="card mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-star-fill text-warning me-2"></i>Priority Skills to
+            Learn
+          </h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Skill</th>
+                  <th>Priority</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for skill in analysis.priority_skills %}
+                <tr>
+                  <td><strong>{{ skill.skill }}</strong></td>
+                  <td>
+                    <span
+                      class="badge {% if skill.priority == 'high' %}bg-danger {% elif skill.priority == 'medium' %}bg-warning {% else %}bg-info{% endif %}"
+                    >
+                      {{ skill.priority|upper }}
+                    </span>
+                  </td>
+                  <td>{{ skill.reason }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Course Recommendations -->
+      <div class="card mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-book-fill text-info me-2"></i>Recommended Courses
+          </h5>
+        </div>
+        <div class="card-body">
+          {% if analysis.recommended_courses and
+          analysis.recommended_courses.top_courses %}
+          <div class="row">
+            {% for course in analysis.recommended_courses.top_courses[:6] %}
+            <div class="col-md-6 mb-3">
+              <div class="card h-100 border">
+                <div class="card-body">
+                  <h6 class="card-title">{{ course.name }}</h6>
+                  <p class="card-text small text-muted mb-2">
+                    <i class="bi bi-building me-1"></i>{{ course.provider }}
+                  </p>
+                  <div class="d-flex flex-wrap gap-1 mb-2">
+                    <span class="badge bg-light text-dark">
+                      <i class="bi bi-clock me-1"></i>{{ course.duration_hours
+                      }}h
+                    </span>
+                    <span class="badge bg-light text-dark">
+                      <i class="bi bi-bar-chart me-1"></i>{{ course.difficulty
+                      }}
+                    </span>
+                    <span class="badge bg-light text-dark">
+                      <i class="bi bi-star-fill text-warning me-1"></i>{{
+                      course.rating }}
+                    </span>
+                  </div>
+                  <p class="small mb-2">
+                    <strong>For:</strong> {{ course.target_skill }}
+                  </p>
+                  <a
+                    href="{{ course.url }}"
+                    target="_blank"
+                    class="btn btn-sm btn-outline-primary"
+                  >
+                    <i class="bi bi-box-arrow-up-right me-1"></i>View Course
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="text-muted text-center py-3">
+            No course recommendations available.
+          </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-lg-4">
+      <!-- Career Roadmap -->
+      <div class="card mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-signpost-2-fill text-primary me-2"></i>Career
+            Roadmap
+          </h5>
+        </div>
+        <div class="card-body">
+          {% if analysis.career_roadmap and analysis.career_roadmap.phases %}
+          <div class="timeline">
+            {% for phase in analysis.career_roadmap.phases %}
+            <div class="timeline-item mb-4">
+              <div class="d-flex align-items-start">
+                <div
+                  class="timeline-marker bg-primary text-white rounded-circle me-3 flex-shrink-0"
+                  style="
+                    width: 30px;
+                    height: 30px;
+                    line-height: 30px;
+                    text-align: center;
+                  "
+                >
+                  {{ phase.phase_number }}
+                </div>
+                <div>
+                  <h6 class="mb-1">{{ phase.name }}</h6>
+                  <p class="small text-muted mb-2">
+                    <i class="bi bi-calendar me-1"></i>{{ phase.duration_weeks
+                    }} weeks
+                  </p>
+                  <div class="d-flex flex-wrap gap-1">
+                    {% for skill in phase.skills[:3] %}
+                    <span class="badge bg-light text-dark small"
+                      >{{ skill }}</span
+                    >
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <div class="alert alert-info mt-3">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong>Total Duration:</strong> {{
+            analysis.career_roadmap.total_duration_weeks }} weeks
+          </div>
+          {% else %}
+          <p class="text-muted text-center py-3">Roadmap not available</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Job Stability Analysis -->
+      <div class="card mb-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-shield-check text-success me-2"></i>Job Stability
+          </h5>
+        </div>
+        <div class="card-body">
+          {% if analysis.stability_analysis %}
+          <!-- Stability Score Gauge -->
+          <div class="text-center mb-4">
+            <div class="position-relative d-inline-block">
+              <canvas id="stabilityGauge" width="150" height="100"></canvas>
+              <div
+                class="position-absolute top-50 start-50 translate-middle mt-3"
+              >
+                <h3 class="mb-0">{{ analysis.stability_score }}</h3>
+                <small class="text-muted">/100</small>
+              </div>
+            </div>
+            <p class="mt-2">
+              <span
+                class="badge {% if analysis.risk_classification == 'Low Risk' %}bg-success {% elif analysis.risk_classification == 'Moderate Risk' %}bg-info {% elif analysis.risk_classification == 'Medium Risk' %}bg-warning {% else %}bg-danger{% endif %} fs-6"
+              >
+                {{ analysis.risk_classification }}
+              </span>
+            </p>
+          </div>
+
+          <!-- Metrics -->
+          {% if analysis.stability_analysis.metrics %}
+          <h6>Key Metrics</h6>
+          <ul class="list-group list-group-flush small">
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Demand Growth</span>
+              <span class="badge bg-success"
+                >{{ analysis.stability_analysis.metrics.demand_growth }}%</span
+              >
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Automation Risk</span>
+              <span class="badge bg-warning text-dark"
+                >{{ analysis.stability_analysis.metrics.automation_risk
+                }}%</span
+              >
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Remote Work</span>
+              <span class="badge bg-info"
+                >{{ analysis.stability_analysis.metrics.remote_work_possibility
+                }}%</span
+              >
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Avg Salary</span>
+              <span class="badge bg-primary"
+                >₹{{ analysis.stability_analysis.metrics.avg_salary_lpa }}
+                LPA</span
+              >
+            </li>
+          </ul>
+          {% endif %}
+
+          <!-- Analysis Summary -->
+          {% if analysis.stability_analysis.analysis %}
+          <div class="mt-3">
+            <h6>Summary</h6>
+            <p class="small text-muted">
+              {{ analysis.stability_analysis.analysis.summary }}
+            </p>
+
+            {% if analysis.stability_analysis.analysis.strengths %}
+            <h6 class="text-success small">Strengths</h6>
+            <ul class="small">
+              {% for strength in
+              analysis.stability_analysis.analysis.strengths[:3] %}
+              <li>{{ strength }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %} {% if analysis.stability_analysis.analysis.concerns %}
+            <h6 class="text-warning small">Concerns</h6>
+            <ul class="small">
+              {% for concern in
+              analysis.stability_analysis.analysis.concerns[:3] %}
+              <li>{{ concern }}</li>
+              {% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+          {% endif %} {% else %}
+          <p class="text-muted text-center py-3">
+            Stability data not available
+          </p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Recommendations -->
+      {% if analysis.stability_analysis and
+      analysis.stability_analysis.recommendations %}
+      <div class="card">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">
+            <i class="bi bi-lightbulb text-warning me-2"></i>Recommendations
+          </h5>
+        </div>
+        <div class="card-body">
+          <ul class="list-group list-group-flush">
+            {% for rec in analysis.stability_analysis.recommendations %}
+            <li class="list-group-item small">
+              <i class="bi bi-arrow-right-circle text-primary me-2"></i>{{ rec
+              }}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  // Simple stability gauge using Chart.js
+  {% if analysis.stability_analysis %}
+  const ctx = document.getElementById('stabilityGauge');
+  if (ctx) {
+      new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+              datasets: [{
+                  data: [{{ analysis.stability_score }}, {{ 100 - analysis.stability_score }}],
+                  backgroundColor: [
+                      '{% if analysis.stability_score >= 70 %}#198754{% elif analysis.stability_score >= 50 %}#ffc107{% else %}#dc3545{% endif %}',
+                      '#e9ecef'
+                  ],
+                  borderWidth: 0
+              }]
+          },
+          options: {
+              cutout: '70%',
+              rotation: -90,
+              circumference: 180,
+              plugins: {
+                  legend: { display: false },
+                  tooltip: { enabled: false }
+              }
+          }
+      });
+  }
+  {% endif %}
+</script>
+{% endblock %}

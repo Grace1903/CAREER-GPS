@@ -1,0 +1,112 @@
+{% extends "base.html" %} {% block title %}Profile - Resume Analyzer{% endblock
+%} {% block nav_items %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.dashboard') }}">
+    <i class="bi bi-speedometer2 me-1"></i>Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.upload_resume') }}">
+    <i class="bi bi-cloud-upload me-1"></i>Upload Resume
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.history') }}">
+    <i class="bi bi-clock-history me-1"></i>History
+  </a>
+</li>
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown">
+    <i class="bi bi-person-circle me-1"></i>{{ user.full_name }}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li>
+      <a class="dropdown-item active" href="{{ url_for('student.profile') }}"
+        >Profile</a
+      >
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+    </li>
+  </ul>
+</li>
+{% endblock %} {% block content %}
+<div class="container mt-5 pt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-person-gear me-2"></i>Profile Settings
+          </h4>
+        </div>
+        <div class="card-body p-4">
+          <!-- Profile Picture -->
+          <div class="text-center mb-4">
+            <div
+              class="avatar-circle bg-primary text-white mx-auto mb-3"
+              style="
+                width: 100px;
+                height: 100px;
+                line-height: 100px;
+                font-size: 2.5rem;
+                border-radius: 50%;
+              "
+            >
+              {{ user.full_name[0] | upper }}
+            </div>
+            <h5>{{ user.full_name }}</h5>
+            <span class="badge bg-secondary">{{ user.role | title }}</span>
+          </div>
+
+          <hr />
+
+          <!-- Profile Form -->
+          <form method="POST" action="{{ url_for('student.profile') }}">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                value="{{ user.email }}"
+                disabled
+              />
+              <div class="form-text">Email cannot be changed.</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="full_name" class="form-label">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="full_name"
+                name="full_name"
+                value="{{ user.full_name }}"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Member Since</label>
+              <input
+                type="text"
+                class="form-control"
+                value="{{ user.created_at.strftime('%B %d, %Y') }}"
+                disabled
+              />
+            </div>
+
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">
+                <i class="bi bi-check-circle me-2"></i>Update Profile
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

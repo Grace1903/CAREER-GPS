@@ -1,0 +1,177 @@
+{% extends "base.html" %} {% block title %}Analysis History - Resume Analyzer{%
+endblock %} {% block nav_items %}
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.dashboard') }}">
+    <i class="bi bi-speedometer2 me-1"></i>Dashboard
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="{{ url_for('student.upload_resume') }}">
+    <i class="bi bi-cloud-upload me-1"></i>Upload Resume
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link active" href="{{ url_for('student.history') }}">
+    <i class="bi bi-clock-history me-1"></i>History
+  </a>
+</li>
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+    <i class="bi bi-person-circle me-1"></i>{{ user.full_name }}
+  </a>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li>
+      <a class="dropdown-item" href="{{ url_for('student.profile') }}"
+        >Profile</a
+      >
+    </li>
+    <li><hr class="dropdown-divider" /></li>
+    <li>
+      <a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a>
+    </li>
+  </ul>
+</li>
+{% endblock %} {% block content %}
+<div class="container mt-5 pt-4">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2><i class="bi bi-clock-history me-2"></i>Analysis History</h2>
+          <p class="text-muted">View all your past resume analyses</p>
+        </div>
+        <a
+          href="{{ url_for('student.upload_resume') }}"
+          class="btn btn-primary"
+        >
+          <i class="bi bi-plus-circle me-2"></i>New Analysis
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow">
+    <div class="card-body">
+      {% if analyses.items %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Resume</th>
+              <th>Target Role</th>
+              <th>Skills Found</th>
+              <th>Match %</th>
+              <th>Stability</th>
+              <th>Processing Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for analysis in analyses.items %}
+            <tr>
+              <td>{{ analysis.id }}</td>
+              <td>{{ analysis.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+              <td>
+                <i class="bi bi-file-earmark-pdf text-danger me-1"></i>
+                {{ analysis.resume.original_filename[:20] }}...
+              </td>
+              <td>
+                <span class="badge bg-primary"
+                  >{{ analysis.target_job_role }}</span
+                >
+              </td>
+              <td>
+                {{ analysis.extracted_skills | length if
+                analysis.extracted_skills else 0 }}
+              </td>
+              <td>
+                <div class="progress" style="width: 80px; height: 20px">
+                  <div
+                    class="progress-bar {% if analysis.skill_match_percentage >= 70 %}bg-success {% elif analysis.skill_match_percentage >= 40 %}bg-warning {% else %}bg-danger{% endif %}"
+                    style="width: {{ analysis.skill_match_percentage }}%"
+                  >
+                    {{ analysis.skill_match_percentage }}%
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span
+                  class="badge {% if analysis.risk_classification == 'Low Risk' %}bg-success {% elif analysis.risk_classification == 'Moderate Risk' %}bg-info {% elif analysis.risk_classification == 'Medium Risk' %}bg-warning {% else %}bg-danger{% endif %}"
+                >
+                  {{ analysis.stability_score }}/100
+                </span>
+              </td>
+              <td>{{ "%.2f"|format(analysis.processing_time) }}s</td>
+              <td>
+                <a
+                  href="{{ url_for('student.view_analysis', analysis_id=analysis.id) }}"
+                  class="btn btn-sm btn-outline-primary"
+                >
+                  <i class="bi bi-eye me-1"></i>View
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if analyses.has_prev %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="{{ url_for('student.history', page=analyses.prev_num) }}"
+            >
+              <i class="bi bi-chevron-left"></i> Previous
+            </a>
+          </li>
+          {% endif %} {% for page_num in analyses.iter_pages() %} {% if page_num
+          %}
+          <li
+            class="page-item {% if page_num == analyses.page %}active{% endif %}"
+          >
+            <a
+              class="page-link"
+              href="{{ url_for('student.history', page=page_num) }}"
+            >
+              {{ page_num }}
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item disabled"><span class="page-link">...</span></li>
+          {% endif %} {% endfor %} {% if analyses.has_next %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="{{ url_for('student.history', page=analyses.next_num) }}"
+            >
+              Next <i class="bi bi-chevron-right"></i>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% else %}
+      <div class="text-center py-5">
+        <i class="bi bi-inbox display-1 text-muted"></i>
+        <h4 class="mt-3">No Analysis History</h4>
+        <p class="text-muted">
+          Upload your first resume to see analysis history here.
+        </p>
+        <a
+          href="{{ url_for('student.upload_resume') }}"
+          class="btn btn-primary"
+        >
+          <i class="bi bi-upload me-2"></i>Upload Resume
+        </a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

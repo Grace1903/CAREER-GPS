@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Create Account - ResumeAI{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="min-vh-100 d-flex">
+    <!-- Left Side - Form -->
+    <div class="col-lg-6 d-flex align-items-center justify-content-center p-4 p-lg-5 bg-light order-lg-1 order-2">
+        <div class="w-100" style="max-width: 450px;" data-aos="fade-right">
+            <!-- Mobile Logo -->
+            <div class="d-lg-none text-center mb-4">
+                <a href="{{ url_for('main.landing') }}" class="text-decoration-none">
+                    <h3 class="text-gradient fw-bold"><i class="bi bi-cpu-fill me-2"></i>ResumeAI</h3>
+                </a>
+            </div>
+            
+            <div class="card border-0 shadow-lg">
+                <div class="card-body p-4 p-lg-5">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold mb-2">Create Account</h3>
+                        <p class="text-muted">Start your career transformation journey</p>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('auth.register') }}">
+                        <div class="mb-3">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0 bg-white">
+                                    <i class="bi bi-person text-muted"></i>
+                                </span>
+                                <input type="text" class="form-control border-start-0 ps-0" 
+                                       id="full_name" name="full_name" placeholder="John Doe" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0 bg-white">
+                                    <i class="bi bi-envelope text-muted"></i>
+                                </span>
+                                <input type="email" class="form-control border-start-0 ps-0" 
+                                       id="email" name="email" placeholder="you@example.com" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0 bg-white">
+                                    <i class="bi bi-lock text-muted"></i>
+                                </span>
+                                <input type="password" class="form-control border-start-0 ps-0" 
+                                       id="password" name="password" placeholder="Create a password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="confirm_password" class="form-label">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text border-end-0 bg-white">
+                                    <i class="bi bi-lock-fill text-muted"></i>
+                                </span>
+                                <input type="password" class="form-control border-start-0 ps-0" 
+                                       id="confirm_password" name="confirm_password" placeholder="Confirm password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label small text-muted" for="terms">
+                                I agree to the <a href="#" class="text-primary">Terms of Service</a> and 
+                                <a href="#" class="text-primary">Privacy Policy</a>
+                            </label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-3 mb-4">
+                            <i class="bi bi-person-plus me-2"></i>Create Account
+                        </button>
+                        
+                        <div class="text-center">
+                            <p class="text-muted mb-0">
+                                Already have an account? 
+                                <a href="{{ url_for('auth.login') }}" class="text-primary fw-semibold text-decoration-none">
+                                    Sign In
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <p class="text-center text-muted small mt-4">
+                <a href="{{ url_for('main.landing') }}" class="text-decoration-none">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Home
+                </a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Right Side - Branding -->
+    <div class="d-none d-lg-flex col-lg-6 bg-gradient-primary position-relative overflow-hidden order-lg-2 order-1">
+        <div class="hero-shapes">
+            <div class="hero-shape hero-shape-1"></div>
+            <div class="hero-shape hero-shape-2"></div>
+        </div>
+        <div class="d-flex flex-column justify-content-center align-items-center w-100 p-5 text-white position-relative">
+            <a href="{{ url_for('main.landing') }}" class="text-white text-decoration-none mb-5">
+                <h2 class="fw-bold"><i class="bi bi-cpu-fill me-2"></i>ResumeAI</h2>
+            </a>
+            <div class="text-center" data-aos="fade-up">
+                <div class="mb-4">
+                    <i class="bi bi-rocket-takeoff display-1"></i>
+                </div>
+                <h3 class="fw-bold mb-3">Start Your Journey</h3>
+                <p class="lead opacity-90 mb-4" style="max-width: 400px;">
+                    Join thousands of professionals who are transforming their careers with AI-powered insights.
+                </p>
+                
+                <div class="d-flex flex-column gap-3 mt-5" style="max-width: 300px;">
+                    <div class="d-flex align-items-center glass rounded-3 p-3">
+                        <div class="rounded-circle bg-white text-primary p-2 me-3">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <span>AI-Powered Analysis</span>
+                    </div>
+                    <div class="d-flex align-items-center glass rounded-3 p-3">
+                        <div class="rounded-circle bg-white text-primary p-2 me-3">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <span>Personalized Roadmaps</span>
+                    </div>
+                    <div class="d-flex align-items-center glass rounded-3 p-3">
+                        <div class="rounded-circle bg-white text-primary p-2 me-3">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <span>Course Recommendations</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
