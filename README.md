@@ -1,55 +1,114 @@
+# 🚀 CAREER-GPS — AI Resume Analyzer
 
-# CAREER-GPS - AI Resume Analyzer
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![Flask](https://img.shields.io/badge/Flask-Backend-green)
+![ML](https://img.shields.io/badge/NLP-AI%20Powered-orange)
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)](https://flask.palletsprojects.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+---
 
-## 🎯 Overview
+## 📌 About the Project
 
-**CAREER-GPS** is an AI-powered resume analyzer that helps job seekers understand their skill gaps, find matching job roles, and get personalized career recommendations.
+CAREER-GPS is an AI-powered resume analyzer that extracts skills from resumes, matches them with suitable job roles, and provides personalized career recommendations including courses, salary insights, and job market trends.
+
+---
 
 ## ✨ Features
 
-- 📄 **Resume Parsing** - Extract text from PDF, DOCX, and TXT files
-- 🎯 **Skill Extraction** - Automatically identify technical and soft skills
-- 💼 **Job Role Matching** - Find the best job matches based on your skills
-- 📚 **Course Recommendations** - Get personalized learning suggestions
-- 📊 **Job Stability Analysis** - View market demand, salary ranges, and growth trends
+- Resume upload and parsing (PDF, DOCX, TXT)
+- AI-based skill extraction using NLP
+- Smart job role matching system
+- Personalized learning recommendations
+- Salary and demand insights
+- Secure login system (Student & Admin)
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Flask, Python
-- **Database**: SQLAlchemy, SQLite
-- **NLP**: spaCy
-- **ML**: scikit-learn, Pandas, NumPy
+Flask, Python, SQLite, SQLAlchemy, spaCy, scikit-learn, pandas, numpy, pdfplumber, JWT, bcrypt
 
-## 🚀 Installation
+---
 
-\`\`\`bash
-git clone https://github.com/Grace1903/CAREER-GPS.git
-cd CAREER-GPS
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python init_db.py
-python run.py
-\`\`\`
+## ⚙️ Installation & Setup
 
-## 🔐 Default Login
+git clone https://github.com/Grace1903/CAREER-GPS.git  
+cd CAREER-GPS  
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@resumeanalyzer.com | admin123 |
-| Student | student@test.com | student123 |
+python -m venv venv  
 
-## 📧 Contact
+venv\Scripts\activate   (Windows)  
+source venv/bin/activate   (Mac/Linux)  
 
-**Grace Elizabeth Jose**
-- GitHub: [@Grace1903](https://github.com/Grace1903)
-- Project: [https://github.com/Grace1903/CAREER-GPS](https://github.com/Grace1903/CAREER-GPS)
+pip install -r requirements.txt  
+python -m spacy download en_core_web_sm  
 
-⭐ Star this repo if you found it helpful!
-"@ | Out-File -FilePath README.md -Encoding utf8
-⭐ Don't forget to star this repository if you found it helpful!
-" > README.md
+python init_db.py  
+python run.py  
+
+Open browser: http://127.0.0.1:5000  
+
+---
+
+## 🔐 Login Credentials
+
+Admin  
+Email: admin@resumeanalyzer.com  
+Password: admin123  
+
+Student  
+Email: student@test.com  
+Password: student123  
+
+---
+
+## 📁 Project Structure
+
+CAREER-GPS/  
+├── app/  
+│   ├── routes/  
+│   ├── services/  
+│   ├── models.py  
+│   └── templates/  
+├── uploads/  
+├── vector_store/  
+├── run.py  
+├── init_db.py  
+├── model.pkl  
+├── requirements.txt  
+└── README.md  
+
+---
+
+## 🔄 Workflow
+
+Upload Resume → Extract Skills → Match Job Roles → Get Recommendations → View Career Insights  
+
+---
+
+## 📊 Supported Job Roles
+
+Data Scientist, Software Engineer, ML Engineer, Full Stack Developer, DevOps Engineer, Data Analyst, Cloud Architect, Cybersecurity Analyst  
+
+---
+
+## ⚠️ Common Issues
+
+- Module not found → install requirements  
+- DB error → run init_db.py  
+- Port issue → change port in run.py  
+- PDF not reading → use text-based PDF  
+
+---
+
+## 🤝 Contribution
+
+Fork repo → create branch → commit changes → push → pull request  
+
+---
+
+## 👩‍💻 Author
+
+Grace Elizabeth Jose  
+GitHub: https://github.com/Grace1903  
+
+---
