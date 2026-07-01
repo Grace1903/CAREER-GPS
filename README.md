@@ -8,7 +8,7 @@
 
 ## 🌐 Live Demo
 
-🔗 **https://career-gps-yd3f.onrender.com**
+🔗(https://career-gps-yd3f.onrender.com)
 
 Upload your resume and get instant AI-powered career guidance.
 
