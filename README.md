@@ -1,4 +1,4 @@
-# 🚀 CAREER-GPS — AI Resume Analyzer
+# 🚀 AI-Powered Career Guidance and Resume Intelligence System — AI Resume Analyzer
 
 [![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
